@@ -1,10 +1,12 @@
 <?php
 // Create connection
 $con=mysqli_connect("localhost","root","","test");
+$connStr = getenv("MYSQLCONNSTR_localdb");
  
 // Check connection
 if (mysqli_connect_errno()){
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
+  echo $connStr;
 }
  
 // This SQL statement selects ALL from the table 'Locations'
