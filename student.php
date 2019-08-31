@@ -16,6 +16,7 @@ $con=mysqli_connect($connArray["Data Source"],$connArray["User Id"],$connArray["
 if (mysqli_connect_errno()){
   echo "Failed to connect to MySQL: " . mysqli_connect_error();
   echo $connStr;
+  print_r($connArray);
 }
  
 // This SQL statement selects ALL from the table 'Locations'
