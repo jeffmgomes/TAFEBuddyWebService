@@ -1,7 +1,16 @@
 <?php
 // Create connection
-$con=mysqli_connect("localhost","root","","test");
+
 $connStr = getenv("MYSQLCONNSTR_localdb");
+
+$split = explode(";",$connStr);
+$connArray = array();
+foreach ($split as $key => $value) {
+  $k = substr($value,0,strpos("="));
+  $connArray[$k] = substr($value,strpos("=")+1);
+}
+
+$con=mysqli_connect($connArray["Data Source"],$connArray["User Id"],$connArray["Password"],$connArray["Database"]);
  
 // Check connection
 if (mysqli_connect_errno()){
