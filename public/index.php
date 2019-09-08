@@ -1,5 +1,5 @@
 <?php
-require 'api/config/LoadDB.php';
+require "../api/config/LoadDB.php";
 
 use api\controllers\StudentController;
 
