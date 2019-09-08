@@ -17,7 +17,7 @@ $uri = explode( '/', $uri );
 if ($uri[1] !== 'student') {
     header("HTTP/1.1 404 Not Found");
     exit(json_encode(
-        array("message" => "Not found. 0 - " . $uri[0] . " 1 - " . $uri[1])
+        array("message" => "Not found. 0 - " . $uri[2] . " 1 - " . $uri[3])
     ));
 }
 
