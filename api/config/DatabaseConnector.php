@@ -19,7 +19,7 @@ class DatabaseConnector {
 
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
         try {
-            $this->dbConnection = new mysqli(
+            $this->dbConnection = new \mysqli(
                                     $connArray["Data Source"],
                                     $connArray["User Id"],
                                     $connArray["Password"],

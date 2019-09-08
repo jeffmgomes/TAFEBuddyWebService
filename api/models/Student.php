@@ -53,7 +53,7 @@ class Student{
             $stmt = $this->db->prepare($stmt);
             $stmt->bind_param("s", $id);
             $stmt->execute();
-            $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); // Get the result
+            $result = $stmt->get_result()->fetch_assoc(); // Get a single row
             $stmt->close(); // Close the connection
             return $result;
         } catch (Exception $e) {
