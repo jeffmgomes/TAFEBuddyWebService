@@ -16,7 +16,9 @@ $uri = explode( '/', $uri );
 // everything else results in a 404 Not Found
 if ($uri[1] !== 'student') {
     header("HTTP/1.1 404 Not Found");
-    exit($uri[1] . ' 404 - Service Not Found ' .  $uri[0]);
+    exit(json_encode(
+        array("message" => "Not found." . $uri)
+    ));
 }
 
 // the user id is, of course, optional and must be a number:
