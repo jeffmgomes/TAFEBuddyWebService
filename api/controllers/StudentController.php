@@ -68,7 +68,7 @@ class StudentController {
         return $response;
     }
 
-    private function createUserFromRequest()
+    private function createStudentFromRequest()
     {
         $input = (array) json_decode(file_get_contents('php://input'), TRUE);
         if (! $this->validateStudent($input)) {
@@ -80,7 +80,7 @@ class StudentController {
         return $response;
     }
 
-    private function updateUserFromRequest($id)
+    private function updateStudentFromRequest($id)
     {
         $result = $this->student->get($id);
         if (! $result) {
@@ -96,7 +96,7 @@ class StudentController {
         return $response;
     }
 
-    private function deleteUser($id)
+    private function deleteStudent($id)
     {
         $result = $this->student->get($id);
         if (! $result) {
