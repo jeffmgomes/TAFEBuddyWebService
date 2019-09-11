@@ -137,7 +137,9 @@ class StudentController {
     private function notFoundResponse()
     {
         $response['status_code_header'] = 'HTTP/1.1 404 Not Found';
-        $response['body'] = null;
+        $response['body'] = json_encode([
+            'message' => 'Resource not found'
+        ]);;
         return $response;
     }
 }
