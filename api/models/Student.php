@@ -67,7 +67,7 @@ class Student{
             INSERT INTO ". $this->tableName ." 
                 (firstname, lastname, email, password)
             VALUES
-                (:firstname, :lastname, :email, :password);
+                (?, ?, ?, ?);
         ";
 
         try {
@@ -77,10 +77,7 @@ class Student{
             $this->sanitize();
 
             // bind values
-            $stmt->bind_param(":firstname", $this->firstname);
-            $stmt->bind_param(":lastname", $this->lastname);
-            $stmt->bind_param(":email", $this->email);
-            $stmt->bind_param(":password", $this->password);
+            $stmt->bind_param("ssss", $this->firstname, $this->lastname, $this->email, $this->password);
 
             $stmt->execute();
 
@@ -96,11 +93,11 @@ class Student{
         $stmt = "
             UPDATE ". $this->tableName ."
             SET 
-                firstname = :firstname,
-                lastname  = :lastname,
-                email = :email,
-                password = :password
-            WHERE id = :id;
+                firstname = ?,
+                lastname  = ?,
+                email = ?,
+                password = ?
+            WHERE id = ?;
         ";
 
         try {
@@ -109,11 +106,7 @@ class Student{
             $this->sanitize();
 
             // bind values
-            $stmt->bind_param(":firstname", $this->firstname);
-            $stmt->bind_param(":lastname", $this->lastname);
-            $stmt->bind_param(":email", $this->email);
-            $stmt->bind_param(":password", $this->password);
-            $stmt->bind_param(":id", $id);
+            $stmt->bind_param("ssssi", $this->firstname, $this->lastname, $this->email, $this->password, $id);
 
             $stmt->execute();
 
@@ -128,14 +121,14 @@ class Student{
     {
         $stmt = "
             DELETE FROM person
-            WHERE id = :id;
+            WHERE id = ?;
         ";
 
         try {
             $stmt = $this->db->prepare($stmt);
 
             // bind values
-            $stmt->bind_param(":id", $id);
+            $stmt->bind_param("i", $id);
 
             $stmt->execute();
 
