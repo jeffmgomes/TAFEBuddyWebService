@@ -23,7 +23,7 @@ class Student{
     {
         $stmt = "
             SELECT 
-                id, firstname, lastname, email, password
+                id, firstName, lastName, email, password
             FROM
                 " . $this->tableName . ";
         ";
@@ -43,7 +43,7 @@ class Student{
     {
         $stmt = "
             SELECT 
-                id, firstname, lastname, email, password
+                id, firstName, lastName, email, password
             FROM
                 ". $this->tableName ."
             WHERE id = ?;
@@ -65,7 +65,7 @@ class Student{
     {
         $stmt = "
             INSERT INTO ". $this->tableName ." 
-                (firstname, lastname, email, password)
+                (firstName, lastName, email, password)
             VALUES
                 (?, ?, ?, ?);
         ";
@@ -77,7 +77,7 @@ class Student{
             $this->sanitize();
 
             // bind values
-            $stmt->bind_param("ssss", $this->firstname, $this->lastname, $this->email, $this->password);
+            $stmt->bind_param("ssss", $this->firstName, $this->lastName, $this->email, $this->password);
 
             $stmt->execute();
 
@@ -93,8 +93,8 @@ class Student{
         $stmt = "
             UPDATE ". $this->tableName ."
             SET 
-                firstname = ?,
-                lastname  = ?,
+                firstName = ?,
+                lastName  = ?,
                 email = ?,
                 password = ?
             WHERE id = ?;
@@ -106,7 +106,7 @@ class Student{
             $this->sanitize();
 
             // bind values
-            $stmt->bind_param("ssssi", $this->firstname, $this->lastname, $this->email, $this->password, $id);
+            $stmt->bind_param("ssssi", $this->firstName, $this->lastName, $this->email, $this->password, $id);
 
             $stmt->execute();
 

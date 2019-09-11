@@ -74,9 +74,11 @@ class StudentController {
         if (! $this->validateStudent($input)) {
             return $this->unprocessableEntityResponse();
         }
-        $this->student->insert();
+        $result = $this->student->insert();
         $response['status_code_header'] = 'HTTP/1.1 201 Created';
-        $response['body'] = null;
+        $response['body'] = json_encode([
+            'message' => $result
+        ]);
         return $response;
     }
 
@@ -90,9 +92,11 @@ class StudentController {
         if (! $this->validateStudent($input)) {
             return $this->unprocessableEntityResponse();
         }
-        $this->student->update($id);
+        $result = $this->student->update($id);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = null;
+        $response['body'] = json_encode([
+            'message' => $result
+        ]);
         return $response;
     }
 
@@ -102,9 +106,11 @@ class StudentController {
         if (! $result) {
             return $this->notFoundResponse();
         }
-        $this->student->delete($id);
+        $result = $this->student->delete($id);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
-        $response['body'] = null;
+        $response['body'] = json_encode([
+            'message' => $result
+        ]);
         return $response;
     }
 
@@ -137,7 +143,7 @@ class StudentController {
         $response['status_code_header'] = 'HTTP/1.1 404 Not Found';
         $response['body'] = json_encode([
             'message' => 'Resource not found'
-        ]);;
+        ]);
         return $response;
     }
 }
