@@ -110,17 +110,15 @@ class StudentController {
 
     private function validateStudent($input)
     {
-        
-
-        if (! isset($input['firstname']) &&
-            ! isset($input['lastname']) &&
-            ! isset($input['email'])) {
+        if (! isset($input[0]['firstname']) &&
+            ! isset($input[0]['lastname']) &&
+            ! isset($input[0]['email'])) {
             return false;
         } else {  
-            $this->student->firstName = $input['firstname'];
-            $this->student->lastName = $input['lastname'];
-            $this->student->email = $input['email'];
-            $this->student->password = (isset($input['password']) ? $input['password'] : "");
+            $this->student->firstName = $input[0]['firstname'];
+            $this->student->lastName = $input[0]['lastname'];
+            $this->student->email = $input[0]['email'];
+            $this->student->password = (isset($input[0]['password']) ? $input[0]['password'] : "");
         }
         return true;
     }
