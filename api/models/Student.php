@@ -139,7 +139,7 @@ class Student{
         }    
     }
 
-    private function login($email, $password)
+    public function login($email, $password)
     {
         $stmt = "
             SELECT * FROM " . $this->tableName . "
