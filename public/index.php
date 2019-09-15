@@ -1,7 +1,7 @@
 <?php
 require "../api/config/LoadDB.php";
 
-use api\controllers\StudentController;
+use api\controllers;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
