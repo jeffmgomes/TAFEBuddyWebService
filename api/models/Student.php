@@ -23,7 +23,7 @@ class Student{
     {
         $stmt = "
             SELECT 
-                `StudentID`, `GivenName`, `LastName`, `EmailAddress`, `Password`
+                `StudentID`, `GivenName`, `LastName`, `EmailAddress`
             FROM
                 " . $this->tableName . ";
         ";
@@ -43,7 +43,7 @@ class Student{
     {
         $stmt = "
             SELECT 
-                `StudentID`, `GivenName`, `LastName`, `EmailAddress`, `Password`
+                `StudentID`, `GivenName`, `LastName`, `EmailAddress`
             FROM
                 ". $this->tableName ."
             WHERE StudentID = ?;
