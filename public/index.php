@@ -1,7 +1,8 @@
 <?php
 require "../api/config/LoadDB.php";
 
-use api\controllers;
+use api\controllers\StudentController;
+use api\controllers\QualificationController;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -17,11 +18,11 @@ $requestMethod = $_SERVER["REQUEST_METHOD"];
 switch($uri[1]){
     case 'student':
         // pass the uri to the StudentController to process the HTTP request:
-        $controller = new \StudentController($dbConnection, $requestMethod, $uri);
+        $controller = new StudentController($dbConnection, $requestMethod, $uri);
         $controller->processRequest();
         break;
     case 'qualification':
-        $controller = new \QualificationController($dbConnection, $requestMethod, $uri);
+        $controller = new QualificationController($dbConnection, $requestMethod, $uri);
         $controller->processRequest();
     default:
         // everything else results in a 404 Not Found
