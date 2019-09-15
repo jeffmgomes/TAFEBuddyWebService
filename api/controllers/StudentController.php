@@ -7,15 +7,17 @@ class StudentController {
     
     private $db;
     private $requestMethod;
-    private $studentId;
+    private $studentId = null;
 
     private $student;
 
-    public function __construct($db, $requestMethod, $studentId)
+    public function __construct($db, $requestMethod, $uri)
     {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
-        $this->studentId = $studentId;
+        if (isset($uri[2])) {
+            $this->studentId = (int) $uri[2];
+        }
 
         $this->student = new Student($db);
     }

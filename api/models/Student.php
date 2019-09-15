@@ -120,7 +120,7 @@ class Student{
     public function delete($id)
     {
         $stmt = "
-            DELETE FROM person
+            DELETE FROM " . $this->tableName . "
             WHERE id = ?;
         ";
 
@@ -129,6 +129,29 @@ class Student{
 
             // bind values
             $stmt->bind_param("i", $id);
+
+            $stmt->execute();
+
+            return $stmt->affected_rows;
+
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }    
+    }
+
+    private function login($email, $password)
+    {
+        $stmt = "
+            SELECT * FROM " . $this->tableName . "
+            WHERE EmailAddress = ?
+                AND Password = SHA2(?,224);
+        ";
+
+        try {
+            $stmt = $this->db->prepare($stmt);
+
+            // bind values
+            $stmt->bind_param("ss", $email, $password);
 
             $stmt->execute();
 
