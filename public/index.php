@@ -24,6 +24,11 @@ switch($uri[1]){
     case 'qualification':
         $controller = new QualificationController($dbConnection, $requestMethod, $uri);
         $controller->processRequest();
+        break;
+    case 'login':
+        $controller = new LoginController($dbConnection, $requestMethod);
+        $controller->processRequest();
+        break;
     default:
         // everything else results in a 404 Not Found
         header("HTTP/1.1 404 Not Found");

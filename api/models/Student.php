@@ -149,14 +149,12 @@ class Student{
 
         try {
             $stmt = $this->db->prepare($stmt);
-
             // bind values
             $stmt->bind_param("ss", $email, $password);
-
             $stmt->execute();
-
-            return $stmt->affected_rows;
-
+            $result = $stmt->get_result()->fetch_assoc(); // Get a single row
+            $stmt->close(); // Close the connection
+            return $result;
         } catch (Exception $e) {
             exit($e->getMessage());
         }    
