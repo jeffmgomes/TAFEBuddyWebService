@@ -8,6 +8,7 @@ class StudentController {
     private $db;
     private $requestMethod;
     private $studentId = null;
+    private $function = null;
 
     private $student;
 
@@ -17,6 +18,10 @@ class StudentController {
         $this->requestMethod = $requestMethod;
         if (isset($uri[2])) {
             $this->studentId = (int) $uri[2];
+        }
+
+        if (isset($uri[3])) {
+            $this->function = (string) $uri[3];
         }
 
         $this->student = new Student($db);

@@ -7,10 +7,10 @@ class Student{
     private $tableName = "student";
 
     // Properties
-    public $id;
-    public $firstName;
+    public $studentId;
+    public $givenName;
     public $lastName;
-    public $email;
+    public $emailAddress;
     public $password;
 
 
@@ -23,7 +23,7 @@ class Student{
     {
         $stmt = "
             SELECT 
-                id, firstName, lastName, email, password
+                `StudentID`, `GivenName`, `LastName`, `EmailAddress`, `Password`
             FROM
                 " . $this->tableName . ";
         ";
@@ -43,10 +43,10 @@ class Student{
     {
         $stmt = "
             SELECT 
-                id, firstName, lastName, email, password
+                `StudentID`, `GivenName`, `LastName`, `EmailAddress`, `Password`
             FROM
                 ". $this->tableName ."
-            WHERE id = ?;
+            WHERE StudentID = ?;
         ";
 
         try {
@@ -65,9 +65,9 @@ class Student{
     {
         $stmt = "
             INSERT INTO ". $this->tableName ." 
-                (firstName, lastName, email, password)
+            (`StudentID`, `GivenName`, `LastName`, `EmailAddress`, `Password`)
             VALUES
-                (?, ?, ?, ?);
+                (?, ?, ?, ?, SHA2(?,224));
         ";
 
         try {
@@ -77,7 +77,7 @@ class Student{
             $this->sanitize();
 
             // bind values
-            $stmt->bind_param("ssss", $this->firstName, $this->lastName, $this->email, $this->password);
+            $stmt->bind_param("ssssb", $this->studentId, $this->givenName, $this->lastName, $this->emailAddress, $this->password);
 
             $stmt->execute();
 
@@ -93,11 +93,11 @@ class Student{
         $stmt = "
             UPDATE ". $this->tableName ."
             SET 
-                firstName = ?,
-                lastName  = ?,
-                email = ?,
-                password = ?
-            WHERE id = ?;
+                GivenName = ?,
+                LastName  = ?,
+                EmailAddress = ?,
+                Password = ?
+            WHERE StudentID = ?;
         ";
 
         try {
@@ -106,7 +106,7 @@ class Student{
             $this->sanitize();
 
             // bind values
-            $stmt->bind_param("ssssi", $this->firstName, $this->lastName, $this->email, $this->password, $id);
+            $stmt->bind_param("sssss", $this->givenName, $this->lastName, $this->emailAddress, $this->password, $id);
 
             $stmt->execute();
 
@@ -121,7 +121,7 @@ class Student{
     {
         $stmt = "
             DELETE FROM " . $this->tableName . "
-            WHERE id = ?;
+            WHERE StudentID = ?;
         ";
 
         try {
@@ -163,10 +163,10 @@ class Student{
     }
 
     private function sanitize(){
-        $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->firstName = htmlspecialchars(strip_tags($this->firstName));
+        $this->studentId = htmlspecialchars(strip_tags($this->studentId));
+        $this->givenName = htmlspecialchars(strip_tags($this->givenName));
         $this->lastName = htmlspecialchars(strip_tags($this->lastName));
-        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->emailAddress = htmlspecialchars(strip_tags($this->emailAddress));
         $this->password = htmlspecialchars(strip_tags($this->password));
     }
 }
