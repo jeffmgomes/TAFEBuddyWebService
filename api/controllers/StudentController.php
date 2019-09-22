@@ -17,7 +17,7 @@ class StudentController {
         $this->db = $db;
         $this->requestMethod = $requestMethod;
         if (isset($uri[2])) {
-            $this->studentId = (int) $uri[2];
+            $this->studentId = (string) $uri[2];
         }
 
         if (isset($uri[3])) {
