@@ -72,12 +72,12 @@ class LoginController {
 
     private function validateInput($input)
     {
-        if(! isset($input[0]['email']) &&
-           ! isset($input[0]['password'])) {
+        if(! isset($input['email']) &&
+           ! isset($input['password'])) {
             return false;
         } else {
-            $this->email = $input[0]['email'];
-            $this->password = $input[0]['password'];
+            $this->email = $input['email'];
+            $this->password = $input['password'];
         }
         return true;
     }
