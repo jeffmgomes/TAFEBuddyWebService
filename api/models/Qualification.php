@@ -20,6 +20,25 @@ class Qualification {
         $this->db = $db;
     }
 
+    public function get($code) {
+        $stmt = "SELECT 
+        `QualCode`, `NationalQualCode`, `TafeQualCode`, `QualName`, `TotalUnits`, `CoreUnits`, `ElectedUnits`, `ReqListedElectedUnits` 
+        FROM 
+            " . $this->tableName . "
+        WHERE QualCode = ? OR NationalQualCode = ?; 
+        ";
+        try {
+            $stmt = $this->db->prepare($stmt);
+            $stmt->bind_param("ss", $code, $code);
+            $stmt->execute();
+            $result = $stmt->get_result()->fetch_assoc(); // Get a single row
+            $stmt->close(); // Close the connection
+            return $result;
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }   
+    }
+
     public function getAll(){
         $stmt = "SELECT 
                 `QualCode`, `NationalQualCode`, `TafeQualCode`, `QualName`, `TotalUnits`, `CoreUnits`, `ElectedUnits`, `ReqListedElectedUnits` 

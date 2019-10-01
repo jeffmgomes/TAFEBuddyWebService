@@ -27,12 +27,17 @@ class StudentController {
         $this->student = new Student($db);
     }
 
+    // Main request processor
     public function processRequest()
     {
         switch ($this->requestMethod) {
             case 'GET':
                 if ($this->studentId) {
-                    $response = $this->get($this->studentId);
+                    if($this->function) {
+                        $reponse = $this->processFunctions();
+                    } else {
+                        $response = $this->get();
+                    }                    
                 } else {
                     $response = $this->getAll();
                 };
@@ -41,10 +46,10 @@ class StudentController {
                 $response = $this->createStudentFromRequest();
                 break;
             case 'PUT':
-                $response = $this->updateStudentFromRequest($this->studentId);
+                $response = $this->updateStudentFromRequest();
                 break;
             case 'DELETE':
-                $response = $this->deleteStudent($this->studentId);
+                $response = $this->deleteStudent();
                 break;
             default:
                 $response = $this->notFoundResponse();
@@ -56,6 +61,7 @@ class StudentController {
         }
     }
 
+    // Main functions
     private function getAll()
     {
         $result = $this->student->getAll();
@@ -64,9 +70,9 @@ class StudentController {
         return $response;
     }
 
-    private function get($id)
+    private function get()
     {
-        $result = $this->student->get($id);
+        $result = $this->student->get($this->studentId);
         if (! $result) {
             return $this->notFoundResponse();
         }
@@ -89,9 +95,9 @@ class StudentController {
         return $response;
     }
 
-    private function updateStudentFromRequest($id)
+    private function updateStudentFromRequest()
     {
-        $result = $this->student->get($id);
+        $result = $this->student->get($this->studentId);
         if (! $result) {
             return $this->notFoundResponse();
         }
@@ -99,7 +105,7 @@ class StudentController {
         if (! $this->validateStudent($input)) {
             return $this->unprocessableEntityResponse();
         }
-        $result = $this->student->update($id);
+        $result = $this->student->update($this->studentId);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode([
             'message' => $result
@@ -107,13 +113,13 @@ class StudentController {
         return $response;
     }
 
-    private function deleteStudent($id)
+    private function deleteStudent()
     {
-        $result = $this->student->get($id);
+        $result = $this->student->get($this->studentId);
         if (! $result) {
             return $this->notFoundResponse();
         }
-        $result = $this->student->delete($id);
+        $result = $this->student->delete($this->studentId);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode([
             'message' => $result
@@ -121,6 +127,7 @@ class StudentController {
         return $response;
     }
 
+    // Validation functions
     private function validateStudent($input)
     {
         if (! isset($input[0]['firstname']) &&
@@ -136,6 +143,33 @@ class StudentController {
         return true;
     }
 
+    // Functions Processor
+    private function processFunctions() {
+        switch ($this->function) {
+            case 'qualifications':
+                $response = $this->getQualifications();
+                break;            
+            default:
+                $response = $this->notFoundResponse();
+                break;
+        }
+        return $reponse;
+    }
+
+    // Student Functions
+    private function getQualifications() {
+        $result = $this->student->get($this->studentId);
+        if (! $result) {
+            return $this->notFoundResponse();
+        }
+        $this->student->studentId = $this->studentId;
+        $result = $this->student->getQualifications();
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    // Miscellaneous functions
     private function unprocessableEntityResponse()
     {
         $response['status_code_header'] = 'HTTP/1.1 422 Unprocessable Entity';

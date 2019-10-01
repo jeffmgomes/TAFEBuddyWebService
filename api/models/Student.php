@@ -160,6 +160,26 @@ class Student{
         }    
     }
 
+    public function getQualifications() {
+        $stmt = "
+            SELECT * FROM `student_studyplan`
+            INNER JOIN qualification ON student_studyplan.QualCode = qualification.QualCode
+            WHERE student_studyplan.StudentID = ?;
+        ";
+        
+        try {
+            $stmt = $this->db->prepare($stmt); // Prepare the query
+            $stmt->bind_param("s", $this->studentId);
+            $stmt->execute(); // Execute the query
+            $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); // Get the result
+            $stmt->close(); // Close the connection
+            return $result;
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+
+    }
+
     private function sanitize(){
         $this->studentId = htmlspecialchars(strip_tags($this->studentId));
         $this->givenName = htmlspecialchars(strip_tags($this->givenName));
