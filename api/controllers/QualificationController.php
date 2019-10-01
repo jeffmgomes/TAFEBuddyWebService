@@ -27,7 +27,7 @@ class QualificationController {
         switch ($this->requestMethod) {
             case 'GET':
                 if ($this->qualCode) {
-                    $response = $this->get($this->qualCode);
+                    $response = $this->get();
                 } else {
                     $response = $this->getAll();
                 };
@@ -46,6 +46,17 @@ class QualificationController {
     {
         $result = $this->qualification->getAll();
         $response['status_code_header'] = "HTTP/1.1 200 OK";
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    private function get()
+    {
+        $result = $this->qualification->get($this->qualCode);
+        if (! $result) {
+            return $this->notFoundResponse();
+        }
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
     }
