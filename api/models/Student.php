@@ -180,6 +180,43 @@ class Student{
 
     }
 
+    public function getResults()
+    {
+        $stmt = "
+                SELECT qualification.QualCode, student_grade.CRN, student_grade.TafeCompCode, student_grade.TermCode, student_grade.TermYear, 
+                student_grade.Grade, student_grade.GradeDate, subject.SubjectCode, subject.SubjectDescription, competency.NationalCompCode, competency.CompetencyName 
+                FROM student_grade 
+                INNER JOIN student_studyplan ON student_grade.StudentID = student_studyplan.StudentID 
+                INNER JOIN qualification ON student_studyplan.QualCode = qualification.QualCode 
+                INNER JOIN crn_detail ON crn_detail.CRN = student_grade.CRN 
+                INNER JOIN subject ON subject.SubjectCode = crn_detail.SubjectCode 
+                INNER JOIN competency ON competency.TafeCompCode = crn_detail.TafeCompCode 
+                WHERE student_grade.StudentID = ?;
+        ";
+        try {
+            
+            $stmt = $this->db->prepare($stmt); // Prepare the query
+            $stmt->bind_param("s", $this->studentId);
+            $stmt->execute(); // Execute the query
+            $result = $stmt->get_result(); // Get the result
+
+            // Grouping result
+            $arr = [];
+            $firstColName = $result->fetch_field_direct(0)->name; // Name of the first column
+            // Group by Qualification
+            while($row = $stmtResult->fetch_assoc()) {
+                $firstColVal = $row[$firstColName];
+                unset($row[$firstColName]);
+                $arr[$firstColVal][] = $row;
+            }
+
+            $stmt->close(); // Close the connection
+            return $arr; // Return the group array
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+
     private function sanitize(){
         $this->studentId = htmlspecialchars(strip_tags($this->studentId));
         $this->givenName = htmlspecialchars(strip_tags($this->givenName));

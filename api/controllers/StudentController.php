@@ -144,11 +144,15 @@ class StudentController {
     }
 
     // Functions Processor
-    private function processFunctions() {
+    private function processFunctions() 
+    {
         switch ($this->function) {
             case 'qualifications':
                 $response = $this->getQualifications();
-                break;            
+                break;
+            case 'results':
+                $response = $this->getResults();
+                break;
             default:
                 $response = $this->notFoundResponse();
                 break;
@@ -157,13 +161,27 @@ class StudentController {
     }
 
     // Student Functions
-    private function getQualifications() {
+    private function getQualifications() 
+    {
         $result = $this->student->get($this->studentId);
         if (! $result) {
             return $this->notFoundResponse();
         }
         $this->student->studentId = $this->studentId;
         $result = $this->student->getQualifications();
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    private function getResults()
+    {
+        $result = $this->student->get($this->studentId);
+        if (! $result) {
+            return $this->notFoundResponse();
+        }
+        $this->student->studentId = $this->studentId;
+        $result = $this->student->getResults();
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
