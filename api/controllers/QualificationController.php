@@ -27,9 +27,7 @@ class QualificationController {
         switch ($this->requestMethod) {
             case 'GET':
                 if ($this->qualCode) {
-                    // TODO
-                    $response = $this->notFoundResponse();
-                    //$response = $this->get($this->qualCode);
+                    $response = $this->get($this->qualCode);
                 } else {
                     $response = $this->getAll();
                 };
