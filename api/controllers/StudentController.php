@@ -153,7 +153,7 @@ class StudentController {
                 $response = $this->notFoundResponse();
                 break;
         }
-        return $reponse;
+        return $response;
     }
 
     // Student Functions
