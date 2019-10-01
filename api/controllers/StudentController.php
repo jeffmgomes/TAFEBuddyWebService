@@ -8,7 +8,7 @@ class StudentController {
     private $db;
     private $requestMethod;
     private $studentId = null;
-    private $property = null;
+    private $function = null;
 
     private $student;
 
@@ -21,7 +21,7 @@ class StudentController {
         }
 
         if (isset($uri[3])) {
-            $this->property = (string) $uri[3];
+            $this->function = (string) $uri[3];
         }
 
         $this->student = new Student($db);
@@ -34,7 +34,7 @@ class StudentController {
             case 'GET':
                 if ($this->studentId) {
                     if($this->function) {
-                        $response = $this->processFunctions();
+                        $reponse = $this->processFunctions();
                     } else {
                         $response = $this->get();
                     }                    
@@ -144,8 +144,7 @@ class StudentController {
     }
 
     // Functions Processor
-    private function processFunctions() 
-    {
+    private function processFunctions() {
         switch ($this->function) {
             case 'qualifications':
                 $response = $this->getQualifications();
@@ -158,8 +157,7 @@ class StudentController {
     }
 
     // Student Functions
-    private function getQualifications() 
-    {
+    private function getQualifications() {
         $result = $this->student->get($this->studentId);
         if (! $result) {
             return $this->notFoundResponse();
