@@ -34,7 +34,7 @@ class StudentController {
             case 'GET':
                 if ($this->studentId) {
                     if($this->function) {
-                        $reponse = $this->processFunctions();
+                        $response = $this->processFunctions();
                     } else {
                         $response = $this->get();
                     }                    
