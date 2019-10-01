@@ -194,7 +194,6 @@ class Student{
                 WHERE student_grade.StudentID = ?;
         ";
         try {
-            
             $stmt = $this->db->prepare($stmt); // Prepare the query
             $stmt->bind_param("s", $this->studentId);
             $stmt->execute(); // Execute the query
@@ -204,7 +203,7 @@ class Student{
             $arr = [];
             $firstColName = $result->fetch_field_direct(0)->name; // Name of the first column
             // Group by Qualification
-            while($row = $stmtResult->fetch_assoc()) {
+            while($row = $result->fetch_assoc()) {
                 $firstColVal = $row[$firstColName];
                 unset($row[$firstColName]);
                 $arr[$firstColVal][] = $row;
