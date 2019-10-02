@@ -142,7 +142,8 @@ class Student{
     public function login($email, $password)
     {
         $stmt = "
-            SELECT * FROM " . $this->tableName . "
+            SELECT `StudentID`, `GivenName`, `LastName`, `EmailAddress`
+            FROM " . $this->tableName . "
             WHERE EmailAddress = ?
                 AND Password = SHA2(?,224);
         ";
