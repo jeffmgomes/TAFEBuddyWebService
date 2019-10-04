@@ -163,7 +163,10 @@ class Student{
 
     public function getQualifications() {
         $stmt = "
-            SELECT * FROM `student_studyplan`
+            SELECT student_studyplan.QualCode, student_studyplan.TermCodeStart, student_studyplan.TermYearStart, 
+            student_studyplan.EnrolmentType, qualification.NationalQualCode, qualification.TafeQualCode, 
+            qualification.QualName, qualification.TotalUnits, qualification.CoreUnits, qualification.ElectedUnits, 
+            qualification.ReqListedElectedUnits FROM `student_studyplan`
             INNER JOIN qualification ON student_studyplan.QualCode = qualification.QualCode
             WHERE student_studyplan.StudentID = ?;
         ";
@@ -184,15 +187,16 @@ class Student{
     public function getResults()
     {
         $stmt = "
-                SELECT qualification.QualCode, student_grade.CRN, student_grade.TafeCompCode, student_grade.TermCode, student_grade.TermYear, 
-                student_grade.Grade, student_grade.GradeDate, subject.SubjectCode, subject.SubjectDescription, competency.NationalCompCode, competency.CompetencyName 
-                FROM student_grade 
-                INNER JOIN student_studyplan ON student_grade.StudentID = student_studyplan.StudentID 
-                INNER JOIN qualification ON student_studyplan.QualCode = qualification.QualCode 
-                INNER JOIN crn_detail ON crn_detail.CRN = student_grade.CRN 
-                INNER JOIN subject ON subject.SubjectCode = crn_detail.SubjectCode 
-                INNER JOIN competency ON competency.TafeCompCode = crn_detail.TafeCompCode 
-                WHERE student_grade.StudentID = ?;
+            SELECT competency_qualification.QualCode, student_grade.CRN, student_grade.TafeCompCode, student_grade.TermCode, 
+            student_grade.TermYear, student_grade.Grade, student_grade.GradeDate, crn_detail.SubjectCode, 
+            competency.NationalCompCode,competency_qualification.CompTypeCode, competency.CompetencyName 
+            FROM competency 
+            INNER JOIN competency_qualification ON competency_qualification.NationalCompCode = competency.NationalCompCode 
+            INNER JOIN student_studyplan ON student_studyplan.QualCode = competency_qualification.QualCode 
+            LEFT JOIN student_grade ON student_grade.TafeCompCode = competency.TafeCompCode 
+            LEFT JOIN crn_detail ON crn_detail.CRN = student_grade.CRN 
+            WHERE student_studyplan.StudentID = ? 
+            ORDER BY competency_qualification.CompTypeCode;
         ";
         try {
             $stmt = $this->db->prepare($stmt); // Prepare the query
