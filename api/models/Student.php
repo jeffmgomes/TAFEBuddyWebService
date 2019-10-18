@@ -96,7 +96,7 @@ class Student{
                 GivenName = ?,
                 LastName  = ?,
                 EmailAddress = ?,
-                Password = ?
+                Password = SHA2(?,224)
             WHERE StudentID = ?;
         ";
 
