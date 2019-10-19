@@ -192,10 +192,10 @@ class Student{
             competency.NationalCompCode,competency_qualification.CompTypeCode, competency.CompetencyName 
             FROM competency 
             INNER JOIN competency_qualification ON competency_qualification.NationalCompCode = competency.NationalCompCode 
-            INNER JOIN student_studyplan ON student_studyplan.QualCode = competency_qualification.QualCode 
-            LEFT JOIN student_grade ON student_grade.TafeCompCode = competency.TafeCompCode 
+            INNER JOIN student_studyplan ON student_studyplan.QualCode = competency_qualification.QualCode
+            LEFT JOIN student_grade ON student_grade.TafeCompCode = competency.TafeCompCode AND student_studyplan.StudentID = student_grade.StudentID
             LEFT JOIN crn_detail ON crn_detail.CRN = student_grade.CRN 
-            WHERE student_studyplan.StudentID = ? 
+            WHERE student_studyplan.StudentID = ?
             ORDER BY competency_qualification.CompTypeCode;
         ";
         try {
