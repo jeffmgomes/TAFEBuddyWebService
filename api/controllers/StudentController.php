@@ -160,7 +160,7 @@ class StudentController {
                 break;
             case 'resultsv2':
                 if ($this->qualCode) {
-                    $response = $this->getResultsV2($qualCode);
+                    $response = $this->getResultsV2($this->qualCode);
                 } else {
                     $response = $this->notFoundResponse();
                 }
