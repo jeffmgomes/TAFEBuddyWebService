@@ -9,6 +9,7 @@ class StudentController {
     private $requestMethod;
     private $studentId = null;
     private $function = null;
+    private $qualCode = null;
 
     private $student;
 
@@ -22,6 +23,10 @@ class StudentController {
 
         if (isset($uri[3])) {
             $this->function = (string) $uri[3];
+        }
+
+        if( isset($uri[4])) {
+            $this->qualCode = (string) $uri[4];
         }
 
         $this->student = new Student($db);
@@ -154,8 +159,8 @@ class StudentController {
                 $response = $this->getResults();
                 break;
             case 'resultsv2':
-                if (isset($uri[4])) {
-                    $response = $this->getResultsV2((string) $uri[4]);
+                if ($this->qualCode) {
+                    $response = $this->getResultsV2($qualCode);
                 } else {
                     $response = $this->notFoundResponse();
                 }
