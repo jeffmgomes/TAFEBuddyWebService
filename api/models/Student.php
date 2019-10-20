@@ -221,6 +221,29 @@ class Student{
         }
     }
 
+    public function getResultsV2($qualCode) 
+    {
+        $stmt = "
+            SELECT student_grade.StudentID, student_grade.CRN, crn_detail.SubjectCode, crn_detail.TafeCompCode, competency.NationalCompCode, student_grade.Grade, competency_qualification.CompTypeCode FROM student_grade
+            INNER JOIN competency ON student_grade.TafeCompCode = competency.TafeCompCode
+            INNER JOIN competency_qualification ON competency.NationalCompCode = competency_qualification.NationalCompCode
+            INNER JOIN crn_detail ON student_grade.CRN = crn_detail.CRN
+            WHERE student_grade.StudentID = ?
+            AND competency_qualification.QualCode = ?
+            ORDER BY competency_qualification.CompTypeCode;
+        ";
+        try {
+            $stmt = $this->db->prepare($stmt); // Prepare the query
+            $stmt->bind_param("ss", $this->studentId, $qualCode);
+            $stmt->execute(); // Execute the query
+            $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); // Get the result
+            $stmt->close(); // Close the connection
+            return $result;
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+
     private function sanitize(){
         $this->studentId = htmlspecialchars(strip_tags($this->studentId));
         $this->givenName = htmlspecialchars(strip_tags($this->givenName));

@@ -153,6 +153,13 @@ class StudentController {
             case 'results':
                 $response = $this->getResults();
                 break;
+            case 'resultsv2':
+                if (isset($uri[4])) {
+                    $response = $this->getResultsV2((string) $uri[4]);
+                } else {
+                    $response = $this->notFoundResponse();
+                }
+                break;  
             default:
                 $response = $this->notFoundResponse();
                 break;
@@ -182,6 +189,19 @@ class StudentController {
         }
         $this->student->studentId = $this->studentId;
         $result = $this->student->getResults();
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
+        return $response;
+    }
+
+    private function getResultsV2($qualCode)
+    {
+        $result = $this->student->get($this->studentId);
+        if (! $result) {
+            return $this->notFoundResponse();
+        }
+        $this->student->studentId = $this->studentId;
+        $result = $this->student->getResultsV2($qualCode);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
         return $response;
