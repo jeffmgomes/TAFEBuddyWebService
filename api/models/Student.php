@@ -224,7 +224,7 @@ class Student{
     public function getResultsV2($qualCode) 
     {
         $stmt = "
-            SELECT student_grade.StudentID, student_grade.CRN, crn_detail.SubjectCode, crn_detail.TafeCompCode, competency.NationalCompCode, student_grade.Grade, competency_qualification.CompTypeCode FROM student_grade
+            SELECT crn_detail.SubjectCode, student_grade.CRN, crn_detail.TafeCompCode, competency.NationalCompCode, student_grade.Grade, competency_qualification.CompTypeCode FROM student_grade
             INNER JOIN competency ON student_grade.TafeCompCode = competency.TafeCompCode
             INNER JOIN competency_qualification ON competency.NationalCompCode = competency_qualification.NationalCompCode
             INNER JOIN crn_detail ON student_grade.CRN = crn_detail.CRN
@@ -236,9 +236,19 @@ class Student{
             $stmt = $this->db->prepare($stmt); // Prepare the query
             $stmt->bind_param("ss", $this->studentId, $qualCode);
             $stmt->execute(); // Execute the query
-            $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); // Get the result
+            $result = $stmt->get_result(); // Get the result
+
+            // Grouping result
+            $arr = [];
+            $firstColName = $result->fetch_field_direct(0)->name; // Name of the first column
+            // Group by subject
+            while($row = $result->fetch_assoc()) {
+                $firstColVal = $row[$firstColName];
+                unset($row[$firstColName]);
+                $arr[$firstColVal][] = $row;
+            }
             $stmt->close(); // Close the connection
-            return $result;
+            return $arr; // Return the group array
         } catch (Exception $e) {
             exit($e->getMessage());
         }
