@@ -3,5 +3,10 @@
         "psr-4": {
             "api\\": "api/"
         }
+    },
+    "require": {
+        "okta/jwt-verifier": "^0.2.1",
+        "firebase/php-jwt": "^5.0",
+        "guzzlehttp/psr7": "^1.6"
     }
 }
