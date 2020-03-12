@@ -187,7 +187,7 @@ class Student{
     public function getResults()
     {
         $stmt = "
-            SELECT competency_qualification.QualCode, student_grade.CRN, student_grade.TafeCompCode, student_grade.TermCode, 
+            SELECT competency_qualification.QualCode, student_grade.CRN, competency.TafeCompCode, student_grade.TermCode, 
             student_grade.TermYear, student_grade.Grade, student_grade.GradeDate, crn_detail.SubjectCode, 
             competency.NationalCompCode,competency_qualification.CompTypeCode, competency.CompetencyName 
             FROM competency 
