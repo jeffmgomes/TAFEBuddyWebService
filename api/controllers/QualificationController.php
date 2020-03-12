@@ -9,6 +9,7 @@ class QualificationController {
     private $requestMethod;
     private $qualCode = null;
     private $tafeCompCode = null;
+    private $function = null;
 
     private $qualification;
 
