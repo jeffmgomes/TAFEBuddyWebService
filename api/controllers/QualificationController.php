@@ -104,7 +104,7 @@ class QualificationController {
         if (! $result) {
             return $this->notFoundResponse();
         }
-        $this->qualification->qualCode = $this->$qualCode;
+        $this->qualification->qualCode = $this->qualCode;
         $result = $this->qualification->getSuggestionForSubject($this->tafeCompCode);
         $response['status_code_header'] = 'HTTP/1.1 200 OK';
         $response['body'] = json_encode($result);
