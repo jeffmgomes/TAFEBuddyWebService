@@ -37,7 +37,7 @@ class QualificationController {
         switch ($this->requestMethod) {
             case 'GET':
                 if ($this->qualCode) {
-                    if ($this->tafeCompCode) {
+                    if ($this->function) {
                         $response = $this->processFunctions();
                     } else {
                         $response = $this->get();
