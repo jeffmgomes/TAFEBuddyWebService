@@ -57,5 +57,26 @@ class Qualification {
         }
     }
 
+    public function getSuggestionForSubject($tafeCompCode){
+        $stmt = "SELECT 
+                subject.SubjectCode, subject.SubjectDescription, subject_competency.TafeCompCode, subject_qualification.UsageType, subject_qualification.QualCode 
+                FROM `subject_competency` 
+                INNER JOIN subject_qualification ON subject_competency.SubjectCode = subject_qualification.SubjectCode 
+                INNER JOIN subject ON subject_qualification.SubjectCode = subject.SubjectCode 
+                WHERE subject_competency.TafeCompCode = ? 
+                AND subject_qualification.QualCode = ?;
+        ";
+        try {
+            $stmt = $this->db->prepare($stmt); // Prepare the query
+            $stmt->bind_param("ss", $tafeCompCode, $this->qualCode);
+            $stmt->execute(); // Execute the query
+            $result = $stmt->get_result()->fetch_all(MYSQLI_ASSOC); // Get the result
+            $stmt->close(); // Close the connection
+            return $result;
+        } catch (Exception $e) {
+            exit($e->getMessage());
+        }
+    }
+
 }
 ?>

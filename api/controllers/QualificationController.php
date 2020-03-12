@@ -8,6 +8,7 @@ class QualificationController {
     private $db;
     private $requestMethod;
     private $qualCode = null;
+    private $tafeCompCode = null;
 
     private $qualification;
 
@@ -19,6 +20,14 @@ class QualificationController {
             $this->qualCode = (string) $uri[2];
         }
 
+        if (isset($uri[3])) {
+            $this->function = (string) $uri[3];
+        }
+
+        if( isset($uri[4])) {
+            $this->tafeCompCode = (string) $uri[4];
+        }
+
         $this->qualification = new Qualification($db);
     }
 
@@ -27,7 +36,11 @@ class QualificationController {
         switch ($this->requestMethod) {
             case 'GET':
                 if ($this->qualCode) {
-                    $response = $this->get();
+                    if ($this->tafeCompCode) {
+                        $response = $this->processFunctions();
+                    } else {
+                        $response = $this->get();
+                    }
                 } else {
                     $response = $this->getAll();
                 };
@@ -40,6 +53,20 @@ class QualificationController {
         if ($response['body']) {
             echo $response['body'];
         }
+    }
+
+    // Functions Processor
+    private function processFunctions() 
+    {
+        switch ($this->function) {
+            case 'subjectsuggestions':
+                $response = $this->getSuggestionForSubject();
+                break;
+            default:
+                $response = $this->notFoundResponse();
+                break;
+        }
+        return $response;
     }
 
     private function getAll()
@@ -67,6 +94,19 @@ class QualificationController {
         $response['body'] = json_encode([
             'message' => 'Resource not found'
         ]);
+        return $response;
+    }
+
+    private function getSuggestionForSubject()
+    {
+        $result = $this->qualification->get($this->qualCode);
+        if (! $result) {
+            return $this->notFoundResponse();
+        }
+        $this->qualification->qualCode = $this->$qualCode;
+        $result = $this->qualification->getSuggestionForSubject($this->tafeCompCode);
+        $response['status_code_header'] = 'HTTP/1.1 200 OK';
+        $response['body'] = json_encode($result);
         return $response;
     }
 }
