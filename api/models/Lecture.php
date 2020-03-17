@@ -4,7 +4,7 @@ namespace api\models;
 class Lecture{
 
     private $db = null;
-    private $tableName = "lecture";
+    private $tableName = "lecturer";
 
     // Properties
     public $lectureId;
