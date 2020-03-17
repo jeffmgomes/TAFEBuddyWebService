@@ -11,7 +11,7 @@ class LoginController {
     private $password;
 
     private $student;
-    //private $lecture; //TODO
+    private $lecture;
 
     public function __construct($db, $requestMethod)
     {
@@ -44,7 +44,7 @@ class LoginController {
             return $this->badRequestResponse();
         } else {
             $studentResult = $this->student->login($this->email,$this->password);
-            //$lectureResult = $this->lecture->login($this->email,$this->password);
+            $lectureResult = $this->lecture->login($this->email,$this->password);
 
             if ($studentResult) {
                 $response['status_code_header'] = 'HTTP/1.1 200 OK';
@@ -55,13 +55,13 @@ class LoginController {
                 return $response;
             }
             
-            // if ($lectureResult) {
-            //     $response['status_code_header'] = 'HTTP/1.1 200 OK';
-            //     $response['body'] = json_encode([
-            //         'type' => 'Lecture'
-            //     ]);
-            //     return $response;
-            // }
+            if ($lectureResult) {
+                $response['status_code_header'] = 'HTTP/1.1 200 OK';
+                $response['body'] = json_encode([
+                    'type' => 'Lecture'
+                ]);
+                return $response;
+            }
 
             $response['status_code_header'] = 'HTTP/1.1 401 Unauthorized';
             $response['body'] = json_encode([
