@@ -2,6 +2,7 @@
 namespace api\controllers;
 
 use api\models\Student;
+use api\models\Lecture;
 
 class LoginController {
 
