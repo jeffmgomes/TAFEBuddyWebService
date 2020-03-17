@@ -19,6 +19,7 @@ class LoginController {
         $this->requestMethod = $requestMethod;
 
         $this->student = new Student($db);
+        $this->lecture = new Lecture($db);
     }
 
     public function processRequest()
