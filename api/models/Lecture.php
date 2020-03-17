@@ -7,7 +7,7 @@ class Lecture{
     private $tableName = "lecturer";
 
     // Properties
-    public $lectureId;
+    public $lecturerID;
     public $givenName;
     public $lastName;
     public $emailAddress;
@@ -23,7 +23,7 @@ class Lecture{
     {
         $stmt = "
             SELECT 
-                `LectureID`, `GivenName`, `LastName`, `EmailAddress`
+                `LecturerID`, `GivenName`, `LastName`, `EmailAddress`
             FROM
                 " . $this->tableName . ";
         ";
@@ -43,10 +43,10 @@ class Lecture{
     {
         $stmt = "
             SELECT 
-                `LectureID`, `GivenName`, `LastName`, `EmailAddress`
+                `LecturerID`, `GivenName`, `LastName`, `EmailAddress`
             FROM
                 ". $this->tableName ."
-            WHERE LectureID = ?;
+            WHERE LecturerID = ?;
         ";
 
         try {
@@ -65,7 +65,7 @@ class Lecture{
     {
         $stmt = "
             INSERT INTO ". $this->tableName ." 
-            (`LectureID`, `GivenName`, `LastName`, `EmailAddress`, `Password`)
+            (`LecturerID`, `GivenName`, `LastName`, `EmailAddress`, `Password`)
             VALUES
                 (?, ?, ?, ?, SHA2(?,224));
         ";
@@ -77,7 +77,7 @@ class Lecture{
             $this->sanitize();
 
             // bind values
-            $stmt->bind_param("ssssb", $this->lectureId, $this->givenName, $this->lastName, $this->emailAddress, $this->password);
+            $stmt->bind_param("ssssb", $this->lecturerID, $this->givenName, $this->lastName, $this->emailAddress, $this->password);
 
             $stmt->execute();
 
@@ -97,7 +97,7 @@ class Lecture{
                 LastName  = ?,
                 EmailAddress = ?,
                 `Password` = SHA2(?,224)
-            WHERE LectureID = ?;
+            WHERE LecturerID = ?;
         ";
 
         try {
@@ -121,7 +121,7 @@ class Lecture{
     {
         $stmt = "
             DELETE FROM " . $this->tableName . "
-            WHERE LectureID = ?;
+            WHERE LecturerID = ?;
         ";
 
         try {
@@ -142,7 +142,7 @@ class Lecture{
     public function login($email, $password)
     {
         $stmt = "
-            SELECT `LectureID`, `GivenName`, `LastName`, `EmailAddress`
+            SELECT `LecturerID`, `GivenName`, `LastName`, `EmailAddress`
             FROM " . $this->tableName . "
             WHERE EmailAddress = ?
                 AND Password = SHA2(?,224);
@@ -162,7 +162,7 @@ class Lecture{
     }
 
     private function sanitize(){
-        $this->lectureId = htmlspecialchars(strip_tags($this->lectureId));
+        $this->lecturerID = htmlspecialchars(strip_tags($this->lecturerID));
         $this->givenName = htmlspecialchars(strip_tags($this->givenName));
         $this->lastName = htmlspecialchars(strip_tags($this->lastName));
         $this->emailAddress = htmlspecialchars(strip_tags($this->emailAddress));
