@@ -196,7 +196,7 @@ class Student{
             LEFT JOIN student_grade ON student_grade.TafeCompCode = competency.TafeCompCode AND student_studyplan.StudentID = student_grade.StudentID
             LEFT JOIN crn_detail ON crn_detail.CRN = student_grade.CRN 
             WHERE student_studyplan.StudentID = ?
-            ORDER BY competency_qualification.CompTypeCode;
+            ORDER BY competency_qualification.CompTypeCode, student_grade.Grade DESC;
         ";
         try {
             $stmt = $this->db->prepare($stmt); // Prepare the query
