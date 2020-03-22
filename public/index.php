@@ -15,7 +15,13 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode( '/', $uri );
 
 // authenticate the request with Okta:
-if (! authenticate()) {
+$arrayOfClients = explode(',',getenv('OKTALISTOFCLIENTID'));
+$isValid = false;
+foreach ($arrayOfClients as $clientId) {
+    $isValid = authenticate($clientId);
+}
+
+if (! $isValid) {
     header("HTTP/1.1 401 Unauthorized");
     exit('Unauthorized');
 }
@@ -45,7 +51,7 @@ switch($uri[1]){
         break;
 }
 
-function authenticate() {
+function authenticate($clientId) {
     try {
         switch(true) {
             case array_key_exists('HTTP_AUTHORIZATION', $_SERVER) :
@@ -63,10 +69,10 @@ function authenticate() {
             throw new \Exception('No Bearer Token');
         }
         $jwtVerifier = (new \Okta\JwtVerifier\JwtVerifierBuilder())
-            ->setIssuer(getenv('OKTAISSUER'))
-            ->setAudience('api://default')
-            ->setClientId(getenv('OKTACLIENTID'))
-            ->build();
+        ->setIssuer(getenv('OKTAISSUER'))
+        ->setAudience('api://default')
+        ->setClientId($clientId)
+        ->build();
         return $jwtVerifier->verify($matches[1]);
     } catch (\Exception $e) {
         return false;
